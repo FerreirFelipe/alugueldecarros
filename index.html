@@ -6,11 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aluguel de carros</title>
 </head>
-<body>
-    
+<body>    
     <h1>Por favor, preencha o formulário abaixo com as informações necessárias para a reserva do seu carro:</h1>
 
     <form>
+        <style type="text/css">
+            #map {
+                height: 500px;
+                width: 500px;
+                background: #ddd;
+            }
+        </style>
+        <div id="map"></div>
+
         <label for="cidade-origem">Cidade de origem:</label>
         <input type="text" id="cidade-origem" name="cidade-origem" required> <br><br>
         
