@@ -1,49 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aluguel de carros</title>
-</head>
-<body>    
-    <h1>Por favor, preencha o formulário abaixo com as informações necessárias para a reserva do seu carro:</h1>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <form>
-        <style type="text/css">
-            #map {
-                height: 500px;
-                width: 500px;
-                background: #ddd;
-            }
-        </style>
-        <div id="map"></div>
-
-        <label for="cidade-origem">Cidade de origem:</label>
-        <input type="text" id="cidade-origem" name="cidade-origem" required> <br><br>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
         
-        <label for="cidade-destino">Cidade de destino:</label>
-        <input type="text" id="cidade-destino" name="cidade-destino" required> <br><br>
+        <link rel="stylesheet" type="text/css" href="./style.css" />
+
+        <title>Adicionando o Mapa</title>
+    </head>
+
+    <body>
+
+        <!-- Título-->
+        <h3>Aluguel de Carros</h3>
+
+        <!--Elemento div para o Mapa -->
+        <div id="mapa"></div>
+    
+
+        <!-- 
+        Carregando a API Maps JavaScript
+        Parâmetros: Chave da API, função iniciarMapa localizada no main.js  
+        -->
+        <script type="module" src="./main.js"></script>
+        <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSLHjxL5qd_h_ONnB4VihiPn6hAKygZkE&callback=iniciarMapa&language=pt&region=br">
+        </script>
         
-        <label for="tipo-carro">Tipo de carro:</label>
-        <select id="tipo-carro" name="tipo-carro" required>
-            <option value="">Selecione um tipo de carro</option>
-            <option value="basico">Básico</option>
-            <option value="intermediario">Intermediário</option>
-            <option value="luxo">Luxo</option>
-        </select> <br><br>
-        
-        <input type="submit" value="Enviar">
-
-    </form> 
-        <h2> Por favor, preencha todos os campos obrigatórios para continuar. Obrigado! </h2>
-    
-    
-    
-    
-    
-    
-
-
-</body>
+    </body>
 </html>
+    
