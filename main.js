@@ -14,7 +14,7 @@ function iniciarMapa() {
         mapTypeId: 'roadmap',
         streetViewControl: false
     };
-    
+
     /* Mapa */ 
     const mapa = new google.maps.Map(document.getElementById('mapa'), mapaOpcoes);
 
@@ -25,18 +25,16 @@ function iniciarMapa() {
 
     });
 
-    function marcador (posicaoSelecionada) {
-        const marcador = new google.maps.Marker ({
 
+    function marcador (posicaoSelecionada) {
+        /*Instanciando um novo marcador*/ 
+        const marcador = new google.maps.Marker ({
             /* Posição do meu marcador. */ 
             position: posicaoSelecionada,
-
             /*Atributos do meu marcador*/ 
             map: mapa,
-
             /*Animação*/ 
             animation: google.maps.Animation.BOUNCE,
-
             /*Alterar marcador de posição*/ 
             draggable: true
 
@@ -44,5 +42,5 @@ function iniciarMapa() {
     };
  
 }
-window.iniciarMapa = iniciarMapa;
+window.iniciarMapa = iniciarMapa();
 
