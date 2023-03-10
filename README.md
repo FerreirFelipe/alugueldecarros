@@ -6,4 +6,4 @@ No desenvolvimento foi utilizado a biblioteca do Google Maps API, API JavaScript
 
 Também foi utilzado JQuery na tentativa de realizar requisições via Ajax.
 
-Se faz necessário ainda, o calculo de distância conforme o veículo escolhido pelo o usuário e uma página para retorno do valor final do aluguel. 
+Se faz necessário ainda, o calculo de distância conforme o veículo escolhido pelo o usuário, uma página para retorno do valor final do aluguel e um servidor para realizar o deploy da aplicação. 
