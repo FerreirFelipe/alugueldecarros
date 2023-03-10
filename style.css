@@ -1,6 +1,11 @@
 /* Definindo o tamanho do elemento div que contém o mapa */
+body {
+  background-color: #ddd;
+}
+
+
 #mapa {
-    height: 400px; /* Altura */
-    width: 500px; /* Largura */
+    height: 500px; /* Altura */
+    width: 100%; /* Largura */
     background: #ddd; /* Cor de fundo */
   }

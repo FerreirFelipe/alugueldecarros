@@ -1,0 +1,46 @@
+Instruções
+
+Este teste deve ser entregue em até 3 dias a partir do recebimento.
+
+A aplicação deve ser desenvolvida em PHP ou Java e utilizar a API do Google Maps para calcular a distância entre dois endereços.
+
+É obrigatório o uso do Git para versionamento do código.
+
+Você pode utilizar frameworks e bibliotecas externas para o desenvolvimento da aplicação, mas deve justificar o uso.
+
+Deve ser enviado um link para o repositório Git e as instruções para a execução da aplicação.
+
+
+Descrição do problema
+
+Uma empresa de locação de veículos precisa de uma aplicação para calcular a distância entre duas cidades e retornar o valor do aluguel do carro para a viagem. O valor do aluguel é calculado em função da distância percorrida e do tipo de carro escolhido pelo cliente.
+
+
+
+Requisitos
+
+A aplicação deve ter um formulário para que o usuário informe as cidades de origem e destino, além do tipo de carro.
+
+A aplicação deve utilizar a API do Google Maps para calcular a distância entre as cidades informadas.
+
+O usuário deve ser capaz de selecionar entre os seguintes tipos de carros: básico, intermediário e luxo.
+
+O valor do aluguel do carro deve ser calculado em função da distância percorrida e do tipo de carro escolhido pelo usuário.
+
+O resultado deve ser exibido em uma página separada contendo o valor do aluguel.
+
+
+Hospedagem da aplicação
+A aplicação deve ser hospedada em um servidor web.
+O link para acesso à aplicação deve ser enviado junto com o código fonte.
+
+Critérios de avaliação
+
+Funcionamento da aplicação
+
+Qualidade do código
+
+Uso correto da API do Google Maps
+
+Uso correto do Git
+
