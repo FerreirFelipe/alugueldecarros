@@ -1,46 +1,140 @@
-/* Iniciando o mapa */
-function iniciarMapa() {
+$(function () {
+    var origem, destination, map;
 
-    /*Opções relacionadas a estrutura do mapa.*/ 
-    var mapaOpcoes = {
-        /* 
-        Incluindo propriedades 
-        zoom: Nível de zoom do Mapa. 
-        center: Onde a API irá centraliza o Mapa.
-        mapTypeId: Tipos de mapas. 
-        */
-        zoom: 4,
-        center: { lat: 0, lng: 0 },
-        mapTypeId: 'roadmap',
-        streetViewControl: false
-    };
-
-    /* Mapa */ 
-    const mapa = new google.maps.Map(document.getElementById('mapa'), mapaOpcoes);
-
-    /* Eventos: Click Duplo*/
-    mapa.addListener('dblclick', function(e){
-        var duploClickPosicao = e.latLng;
-        marcador(duploClickPosicao);
-
+    // adicionando campos de entrada
+    google.maps.event.addDomListener(window, 'load', function (listener) {
+        definindoDestinos();
+        iniciarMapa();
     });
 
+    // Iniciando o mapa
+    function iniciarMapa() {
+        var minhaLatLng = {
+            lat: 20.5937,
+            lng: 78.9629
+        };
+        map = new google.maps.Map(document.getElementById('mapa'), {zoom: 16, center: minhaLatLng,});
+    }
 
-    function marcador (posicaoSelecionada) {
-        /*Instanciando um novo marcador*/ 
-        const marcador = new google.maps.Marker ({
-            /* Posição do meu marcador. */ 
-            position: posicaoSelecionada,
-            /*Atributos do meu marcador*/ 
-            map: mapa,
-            /*Animação*/ 
-            animation: google.maps.Animation.BOUNCE,
-            /*Alterar marcador de posição*/ 
-            draggable: true
+    function definindoDestinos() {
+        var partida = new google.maps.places.Autocomplete(document.getElementById('partida'));
+        var chegada = new google.maps.places.Autocomplete(document.getElementById('chegada'));
 
+        google.maps.event.addListener(partida, 'place_changed', function () {
+            var partida_endereco = partida.getPlace();
+            var endereco_partida = partida_endereco.formatted_address;
+            $('#origem').val(endereco_partida);
         });
-    };
- 
+
+        google.maps.event.addListener(chegada, 'place_changed', function () {
+            var chegada_endereco = chegada.getPlace();
+            var endereco_chegada = chegada_endereco.formatted_address;
+            $('#destino').val(endereco_chegada);
+        });
+    }
+
+    function exibirRota(modo_viagem, origem, destino, servicos_direcoes, exibir_direcoes) {
+        servicos_direcoes.route({
+            origin: origem,
+            destination: destino,
+            travelMode: modo_viagem,
+            avoidTolls: true
+        }, function (response, status) {
+            if (status === 'OK') {
+                exibir_direcoes.setMap(map);
+                exibir_direcoes.setDirections(response);
+            } else {
+                exibir_direcoes.setMap(null);
+                exibir_direcoes.setDirections(null);
+                alert('Não foi possível exibir as rotas devido a: ' + status);
+            }
+        });
+    }
+
+    // calcule a distância, depois de terminar, envie o resultado para a função de retorno de chamada
+    function calcularDistancia(modo_viagem, origin, destination) {
+
+        var DistanceMatrixService = new google.maps.DistanceMatrixService();
+        DistanceMatrixService.getDistanceMatrix(
+            {
+                origins: [origem],
+                destinations: [destino],
+                travelMode: google.maps.TravelMode[modo_viagem],
+                // unitSystem: google.maps.UnitSystem.IMPERIAL, // milhas e pés.
+                unitSystem: google.maps.UnitSystem.metric, // kms e metros
+                avoidHighways: false,
+                avoidTolls: false
+            }, salvarResultados);
+    }
+
+    // salvar resultados de distância
+    function salvarResultados(response, status) {
+        if (status != google.maps.DistanceMatrixStatus.OK) {
+            $('#result').html(err);
+        } else {
+            var origem = response.originAddresses[0];
+            var destino = response.destinationAddresses[0];
+            if (response.rows[0].elements[0].status === "ZERO_RESULTS") {
+                $('#result').html("Desculpe, não disponível para usar este modo de viagem entre" + origem + " and " + destino);
+            } else {
+                var distancia = response.rows[0].elements[0].distance;
+                var duracao = response.rows[0].elements[0].duration;
+                var distancia_em_kms = distancia.value / 1000; // Kms
+                var distancia_em_milhas = distancia.value / 1609.34; // Milhas
+                var texto_duracao = duration.text;
+                appendResults(distancia_em_kms, distancia_em_milhas, texto_duracao);
+                sendAjaxRequest(origem, destino, distancia_em_kms, distancia_em_milhas, texto_duracao);
+            }
+        }
+    }
+
+    // Anexar resultados no HTML
+    function anexarResultados(distancia_em_kms, distancia_em_milhas, texto_duracao) {
+        $("#result").removeClass("hide");
+        $('#em_milhas').html(" A distância em milhas é: <span class='badge badge-pill badge-secondary'>" + distancia_em_milhas.toFixed(2) + "</span>");
+        $('#em_kms').html("A distância em KMs é: <span class='badge badge-pill badge-secondary'>" + distancia_em_kms.toFixed(2) + "</span>");
+        $('#texto_duracao').html("Duração: <span class='badge badge-pill badge-success'>" + texto_duracao + "</span>");
+    }
+
+    // finalize a solicitação ajax para salvar os resultados no banco de dados
+    
+
+    // ao enviar a rota de exibição, anexe os resultados e envie a calcularDistance para a solicitação ajax
+    $('#distancia_form').submit(function (e) {
+        e.preventDefault();
+        var origem = $('#origem').val();
+        var destino = $('#destino').val();
+        var modo_viagem= $('#modo_viagem').val();
+        var exibir_direcoes = new google.maps.DirectionsRenderer({'draggable': false});
+        var servicos_direcoes = new google.maps.DirectionsService();
+       exibirRota(modo_viagem, origem, destino, servicos_direcoes, exibir_direcoes);
+        calcularDistancia(modo_viagem, origem, destino);
+    });
+
+});
+
+// Obtendo posicao atual.
+function obterLocalizacaoAtual() {
+    if (navigator.geolocation) {
+        navigator.geolocation.obterLocalizacaoAtual(definirLocalizacaoAtual);
+    } else {
+        alert("A geolocalização não é suportada por este navegador.")
+    }
 }
-window.iniciarMapa = iniciarMapa();
+
+// obter endereço formatado com base na posição atual e configurá-lo para entrada
+function definirLocalizacaoAtual(pos) {
+    var geocodificador = new google.maps.Geocoder();
+    var latlng = {lat: parseFloat(pos.coords.latitude), lng: parseFloat(pos.coords.longitude)};
+    geocodificador.geocode({ 'location' :latlng  }, function (responses) {
+        console.log(responses);
+        if (responses && responses.length > 0) {
+            $("#origem").val(responses[1].formatted_address);
+            $("#chegada").val(responses[1].formatted_address);
+            //    console.log(responses[1].formatted_address);
+        } else {
+            alert("Não é possível determinar o endereço neste local.")
+        }
+    });
+}
 
