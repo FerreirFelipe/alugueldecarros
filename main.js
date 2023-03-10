@@ -92,7 +92,7 @@ $(function () {
     function anexarResultados(distancia_em_kms, distancia_em_milhas, texto_duracao) {
         $("#resultado").removeClass("hide");
         $('#em_milhas').html(" A distância em milhas é: <span class='badge badge-pill badge-secondary'>" + distancia_em_milhas.toFixed(2) + "</span>");
-        $('#em_kms').html("A distância em KMs é: <span class='badge badge-pill badge-s"e"condary'>" + distancia_em_kms.toFixed(2) + "</span>");
+        $('#em_kms').html("A distância em KMs é: <span class='badge badge-pill badge-secondary'>" + distancia_em_kms.toFixed(2) + "</span>");
         $('#texto_duracao').html("Duração: <span class='badge badge-pill badge-success'>" + texto_duracao + "</span>");
     }
 
@@ -107,13 +107,10 @@ $(function () {
         var modo_viagem= $('#modo_viagem').val();
         var exibir_direcoes = new google.maps.DirectionsRenderer({'draggable': false});
         var servicos_direcoes = new google.maps.DirectionsService();
-        exibirRota(modo_viagem, origem, destino, servicos_direcoes, exibir_direcoes);
+       exibirRota(modo_viagem, origem, destino, servicos_direcoes, exibir_direcoes);
         calcularDistancia(modo_viagem, origem, destino);
-
-        console.log(calcularDistancia(modo_viagem, origem, destino));
     });
 
 });
-
 
 
